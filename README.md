@@ -5,7 +5,22 @@
 Wrappers, tools and additional API's for using ROS with the Gazebo simulator. Formally simulator_gazebo stack, gazebo_pkgs is a meta package. Now Catkinized and works with the standalone Gazebo debian.
 
 ### Installation
-[Installing gazebo_ros_pkgs](http://gazebosim.org/tutorials?tut=ros_installing&cat=connect_ros)
+```
+mkdir -p ~/gazebo_ros_ws/src/ros-simulation
+cd ~/gazebo_ros_ws/src/ros-simulation
+git clone -b dashing https://github.com/kkonen/gazebo_ros_pkgs.git
+cd ~/gazebo_ros_ws
+rosdep install --from-paths src --ignore-src -r -y
+RMW_IMPLEMENTATION=rmw_opensplice_cpp colcon build --symlink-install
+```
+
+Ignore RMW_IMPLEMENTATION=rmw_opensplice_cpp if you are not installing this for the Phantomx version of ros2learn
+
+
+Be sure to source this workspace's install setup for every new terminal you open:
+```
+source ~/ws/gazebo_ros_ws/setup.bash
+```
 
 ### Documentation and Tutorials
 [On gazebosim.org](http://gazebosim.org/tutorials?cat=connect_ros)
