@@ -6,6 +6,7 @@ Wrappers, tools and additional API's for using ROS with the Gazebo simulator. Fo
 
 ### Installation
 ```
+source /opt/ros/dashing/setup.bash
 mkdir -p ~/gazebo_ros_ws/src/ros-simulation
 cd ~/gazebo_ros_ws/src/ros-simulation
 git clone -b dashing https://github.com/kkonen/gazebo_ros_pkgs.git
