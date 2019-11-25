@@ -6,6 +6,7 @@ Wrappers, tools and additional API's for using ROS with the Gazebo simulator. Fo
 
 ### Installation
 ```
+source /opt/ros/dashing/setup.bash
 mkdir -p ~/gazebo_ros_ws/src/ros-simulation
 cd ~/gazebo_ros_ws/src/ros-simulation
 git clone -b dashing https://github.com/kkonen/gazebo_ros_pkgs.git
@@ -14,12 +15,12 @@ rosdep install --from-paths src --ignore-src -r -y
 RMW_IMPLEMENTATION=rmw_opensplice_cpp colcon build --symlink-install
 ```
 
-Ignore RMW_IMPLEMENTATION=rmw_opensplice_cpp if you are not installing this for the Phantomx version of ros2learn
+Ignore RMW_IMPLEMENTATION=rmw_opensplice_cpp if you are not installing this for the phantomx version of ros2learn, or don't.. I'm just a readme.
 
 
 Be sure to source this workspace's install setup for every new terminal you open:
 ```
-source ~/ws/gazebo_ros_ws/setup.bash
+source ~/gazebo_ros_ws/install/setup.bash
 ```
 
 ### Documentation and Tutorials
