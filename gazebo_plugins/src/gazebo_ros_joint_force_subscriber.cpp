@@ -78,7 +78,7 @@ void GazeboRosJointForceSubscriber::Load(gazebo::physics::ModelPtr model, sdf::E
   // Subscribe to float messages
   impl_->force_.data = 0.0;
   impl_->float_sub_ = impl_->ros_node_->create_subscription<std_msgs::msg::Float32>(
-    "gazebo_ros_joint_force_subscriber", std::bind(&GazeboRosJointForceSubscriber::OnRosFloat32Msg, this,
+    "gazebo_ros_joint_force_subscriber", rclcpp::QoS(0), std::bind(&GazeboRosJointForceSubscriber::OnRosFloat32Msg, this,
     std::placeholders::_1));
 
 //impl_->cmd_vel_sub_ = impl_->ros_node_->create_subscription<geometry_msgs::msg::Twist>(
