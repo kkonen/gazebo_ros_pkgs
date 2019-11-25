@@ -81,7 +81,7 @@ void GazeboRosBumper::Load(gazebo::sensors::SensorPtr _sensor, sdf::ElementPtr _
 
   // Contact state publisher
   impl_->pub_ = impl_->ros_node_->create_publisher<gazebo_msgs::msg::ContactsState>(
-    "bumper_states", rclcpp::SensorDataQoS());
+    "bumper_states", 1000);
 
   RCLCPP_INFO(impl_->ros_node_->get_logger(), "Publishing contact states to [%s]",
     impl_->pub_->get_topic_name());
