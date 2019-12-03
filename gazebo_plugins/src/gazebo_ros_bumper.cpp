@@ -52,6 +52,8 @@ public:
   /// Frame name, to be used by TF.
   std::string frame_name_;
 
+  gazebo::common::Time last_time_;
+
   /// Connects to pre-render events.
   gazebo::event::ConnectionPtr update_connection_;
 };
@@ -81,17 +83,16 @@ void GazeboRosBumper::Load(gazebo::sensors::SensorPtr _sensor, sdf::ElementPtr _
 
   // Contact state publisher
   impl_->pub_ = impl_->ros_node_->create_publisher<gazebo_msgs::msg::ContactsState>(
-    "bumper_states", 1000);
+    "bumper_states", 10);
 
   RCLCPP_INFO(impl_->ros_node_->get_logger(), "Publishing contact states to [%s]",
     impl_->pub_->get_topic_name());
 
   // Get tf frame for output
   impl_->frame_name_ = _sdf->Get<std::string>("frame_name", "world").first;
-
+  impl_->last_time_ = impl_->parent_sensor_->LastUpdateTime();
   impl_->update_connection_ = impl_->parent_sensor_->ConnectUpdated(
     std::bind(&GazeboRosBumperPrivate::OnUpdate, impl_.get()));
-
   impl_->parent_sensor_->SetActive(true);
 }
 
@@ -99,11 +100,22 @@ void GazeboRosBumperPrivate::OnUpdate()
 {
   gazebo::msgs::Contacts contacts;
   contacts = parent_sensor_->Contacts();
+  gazebo::common::Time current_time = parent_sensor_->LastUpdateTime();
 
+  if (current_time < last_time_) {
+    last_time_ = current_time;
+  }
+
+  // Rate control
+  if ((current_time - last_time_).Double() < (1.0 / 50.0))
+  {
+    return;
+  }
   auto contact_state_msg = gazebo_ros::Convert<gazebo_msgs::msg::ContactsState>(contacts);
   contact_state_msg.header.frame_id = frame_name_;
 
   pub_->publish(contact_state_msg);
+  last_time_ = current_time;
 }
 
 GZ_REGISTER_SENSOR_PLUGIN(GazeboRosBumper)
